@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert'
-import { createServer } from 'http'
+import { request } from 'http'
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 import { fileURLToPath } from 'url'
@@ -17,10 +17,10 @@ async function makeRequest (method, path) {
       hostname: 'localhost',
       port: 3000,
       path
-    }
+    };
 
-    const req = createServer(options, (res) => {
-      let data = ''
+    const req = request(options, (res) => {
+      let data = '';
       res.on('data', (chunk) => {
         data += chunk
       })
@@ -69,10 +69,10 @@ test('Servidor maneja archivos estáticos', async (t) => {
   })
 
   // Test para imágenes
-  await t.test('GET /images/logo.png devuelve imagen', async () => {
-    const response = await makeRequest('GET', '/images/logo.png')
+  await t.test('GET /images/logo-mercado-liebre.svg devuelve imagen SVG', async () => {
+    const response = await makeRequest('GET', '/images/logo-mercado-liebre.svg')
     assert.strictEqual(response.statusCode, 200)
-    assert.strictEqual(response.headers['content-type'], 'image/png')
+    assert.strictEqual(response.headers['content-type'], 'image/svg+xml')
   })
 })
 
